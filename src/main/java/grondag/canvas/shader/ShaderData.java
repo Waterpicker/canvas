@@ -19,7 +19,11 @@ package grondag.canvas.shader;
 import grondag.canvas.texture.TextureData;
 import grondag.canvas.varia.WorldDataManager;
 import grondag.frex.api.material.UniformRefreshFrequency;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import org.lwjgl.opengl.GL21;
 
 import java.util.function.Consumer;
@@ -43,6 +47,11 @@ public class ShaderData {
 
 	public static final Consumer<GlProgram> STANDARD_UNIFORM_SETUP = program -> {
 		program.uniformArrayf("_cvu_world", UniformRefreshFrequency.PER_TICK, u -> u.set(WorldDataManager.data()), WorldDataManager.LENGTH);
+
+		program.uniform3f("_cvu_camera_pos", UniformRefreshFrequency.PER_TICK, uniform3f -> {
+			Vec3d pos = MinecraftClient.getInstance().getEntityRenderDispatcher().camera.getPos();
+			uniform3f.set((float) pos.x, (float) pos.y, (float) pos.z);
+		});
 
 		program.uniformSampler2d("frxs_spriteAltas", UniformRefreshFrequency.ON_LOAD, u -> u.set(TextureData.MC_SPRITE_ATLAS - GL21.GL_TEXTURE0));
 

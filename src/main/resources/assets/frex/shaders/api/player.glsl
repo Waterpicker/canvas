@@ -1,4 +1,5 @@
 #include canvas:shaders/internal/world.glsl
+#include canvas:shaders/internal/player.glsl
 
 /******************************************************
   frex:shaders/api/player.glsl
@@ -32,4 +33,8 @@ vec4 frx_heldLight() {
  */
 bool frx_playerHasNightVision() {
 	return frx_bitValue(_cvu_world[_CV_FLAGS_0], _CV_FLAG0_NIGHT_VISTION_ACTIVE) == 1;
+}
+
+vec3 frx_cameraPos() {
+	return _cvu_camera_pos;
 }
